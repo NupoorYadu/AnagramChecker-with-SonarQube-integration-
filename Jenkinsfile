@@ -58,16 +58,27 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo '========== Running SonarQube code quality analysis =========='
-                bat '''
-                    mvn sonar:sonar ^
-                        -Dsonar.host.url=%SONAR_HOST_URL% ^
-                        -Dsonar.login=%SONAR_LOGIN% ^
-                        -Dsonar.projectKey=%PROJECT_NAME% ^
-                        -Dsonar.projectName=%PROJECT_NAME% ^
-                        -Dsonar.sources=src/main ^
-                        -Dsonar.tests=src/test ^
-                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-                '''
+                script {
+                    try {
+                        bat '''
+                            mvn sonar:sonar ^
+                                -Dsonar.host.url=%SONAR_HOST_URL% ^
+                                -Dsonar.login=%SONAR_LOGIN% ^
+                                -Dsonar.projectKey=%PROJECT_NAME% ^
+                                -Dsonar.projectName=%PROJECT_NAME% ^
+                                -Dsonar.sources=src/main ^
+                                -Dsonar.tests=src/test ^
+                                -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                        '''
+                        echo '✓ SonarQube analysis completed successfully'
+                    } catch (Exception e) {
+                        echo '⚠ WARNING: SonarQube server is not available'
+                        echo "  Error: ${e.message}"
+                        echo "  To start SonarQube, use: docker run -d -p 9000:9000 sonarqube:latest"
+                        echo "  Pipeline will continue without code quality metrics"
+                        // Don't fail the build - continue to next stage
+                    }
+                }
             }
         }
 

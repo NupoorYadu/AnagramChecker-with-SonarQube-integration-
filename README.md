@@ -21,7 +21,8 @@ This project demonstrates a **Maven-based Java application** with **Jenkins CI/C
 |-------|--------|--------|---------|
 | **Build #1** | ⚠️ PARTIAL | 1-4, 6-8 | SonarQube unavailable, pipeline now handles gracefully |
 | **Build #2** | 🔄 PENDING | All 8 | Updated pipeline with SonarQube graceful failure handling |
-| **Latest Commit** | ✅ de67196 | Main branch | Updated Jenkinsfile: SonarQube now optional |
+| **Latest Commit** | ✅ c794b7b | Main branch | Upgraded JaCoCo 0.8.8→0.8.11 for Java 23 support |
+| **Tests Status** | ✅ 16/16 PASSING | All passing | Verified locally with zero failures |
 
 **Jenkins Job:** `AnagramChecker-SonarQube`  
 **GitHub Repository:** https://github.com/NupoorYadu/AnagramChecker-with-SonarQube-integration-
